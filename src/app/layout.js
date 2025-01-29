@@ -1,5 +1,9 @@
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import QueryProvider from "@/context/tanstak";
+import NextTopLoader from "nextjs-toploader";
+import { Geist, Geist_Mono } from "next/font/google";
+import { IsSmallDeviceProvider } from "@/context/isSmallDevise";
+import { SelectedOptionProvider } from "@/context/selectedOption";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -21,8 +25,14 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        suppressHydrationWarning
       >
-        {children}
+        <QueryProvider>
+          <NextTopLoader showSpinner={false} />
+          <SelectedOptionProvider>
+            <IsSmallDeviceProvider>{children}</IsSmallDeviceProvider>
+          </SelectedOptionProvider>
+        </QueryProvider>
       </body>
     </html>
   );
