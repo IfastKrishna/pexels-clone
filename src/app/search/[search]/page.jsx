@@ -17,6 +17,10 @@ import FilterQuery from "@/components/Filter/QueryFilter";
 export default function Home() {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(20);
+  const [orientation, setOrientation] = useState("");
+  const [size, setSize] = useState("");
+  const [color, setColor] = useState("");
+  const [sortBy, setSortBy] = useState("newest");
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const query = useParams();
 
@@ -25,9 +29,13 @@ export default function Home() {
     refetch: refetch,
     isPending,
   } = useSearchPhotos({
-    search: query?.search,
+    search: query?.search.toLowerCase(),
     page,
     per_page: limit,
+    size: size.toLowerCase(),
+    orientation: orientation.toLowerCase(),
+    color: color,
+    sortby: sortBy.toLowerCase(),
   });
 
   const loadMorePhotos = async () => {
@@ -57,7 +65,17 @@ export default function Home() {
           </h1>
 
           {/* Query fileter  */}
-          <FilterQuery activetab="Photos" />
+          <FilterQuery
+            activetab="Photos"
+            colors={color}
+            setColors={setColor}
+            sizes={size}
+            setSizes={setSize}
+            orientation={orientation}
+            setOrientation={setOrientation}
+            sortBys={sortBy}
+            setSortBys={setSortBy}
+          />
           <MasonryContainer>
             {data?.photos?.map((photo) => (
               <MasonryPhotoCard key={photo.id} photo={photo} />

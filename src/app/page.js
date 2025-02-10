@@ -17,6 +17,7 @@ import useSearchPhotos from "@/lib/query/useSearchPhotos";
 export default function Home() {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(20);
+  const [sortBy, setSortBy] = useState("newest");
   const [isLoadingMore, setIsLoadingMore] = useState(false);
 
   const {
@@ -27,6 +28,7 @@ export default function Home() {
     search: "current",
     page,
     per_page: limit,
+    sortby: sortBy?.toLowerCase(),
   });
 
   const scrolled = useIsScrolled("82.5vh");
@@ -53,8 +55,8 @@ export default function Home() {
           <PageFilter />
         </div>
 
-        <Container className="py-2 ">
-          <NewTrendingFilter />
+        <Container className="py-2">
+          <NewTrendingFilter filter={sortBy} setFilter={setSortBy} />
         </Container>
 
         <Container className="py-4 sm:py-8">

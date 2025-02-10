@@ -12,7 +12,16 @@ const useSearchPhotos = ({
   sortby = "newest",
 }) =>
   useQuery({
-    queryKey: ["searchPhotos"],
+    queryKey: [
+      "searchPhotos",
+      search,
+      per_page,
+      page,
+      orientation,
+      size,
+      color,
+      sortby,
+    ],
     queryFn: async () => {
       const response = await api.get(
         `/v1/${

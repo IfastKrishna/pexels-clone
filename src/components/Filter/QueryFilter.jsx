@@ -12,6 +12,7 @@ export default function FilterQuery({
   setColors = () => {},
   sortBys = "Newest",
   setSortBys = () => {},
+  colorFitler = true,
 }) {
   const [activeTab, setActiveTab] = useState(activetab);
   const [filter, setFilter] = useState(false);
@@ -143,28 +144,30 @@ export default function FilterQuery({
           />
 
           {/* Colors Filter */}
-          <Popover
-            triggerClassName="px-4 py-2.5 border rounded-md w-full flex justify-between items-center font-medium"
-            contentClassName="border rounded-md w-full bg-white p-4"
-            triggerName={
-              <div
-                className="w-5 h-5 rounded-full border"
-                style={{ backgroundColor: colors }}
-              ></div>
-            }
-            content={
-              <div className="grid grid-cols-7 gap-1">
-                {colorOptions.map((color) => (
-                  <div
-                    key={color}
-                    className="w-12 h-8 cursor-pointer border"
-                    style={{ backgroundColor: color }}
-                    onClick={() => setColors(color)}
-                  ></div>
-                ))}
-              </div>
-            }
-          />
+          {colorFitler && (
+            <Popover
+              triggerClassName="px-4 py-2.5 border rounded-md w-full flex justify-between items-center font-medium"
+              contentClassName="border rounded-md w-full bg-white p-4"
+              triggerName={
+                <div
+                  className="w-5 h-5 rounded-full border"
+                  style={{ backgroundColor: colors }}
+                ></div>
+              }
+              content={
+                <div className="grid grid-cols-7 gap-1">
+                  {colorOptions.map((color) => (
+                    <div
+                      key={color}
+                      className="w-12 h-8 cursor-pointer border"
+                      style={{ backgroundColor: color }}
+                      onClick={() => setColors(color)}
+                    ></div>
+                  ))}
+                </div>
+              }
+            />
+          )}
         </div>
       )}
     </>

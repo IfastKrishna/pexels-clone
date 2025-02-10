@@ -15,17 +15,20 @@ import FilterQuery from "@/components/Filter/QueryFilter";
 
 export default function Page() {
   const [page, setPage] = useState(1);
+  const [size, setSize] = useState("All Sizes");
+  const [orientation, setOrientation] = useState("All Orientations");
+  const [sortBy, setSortBy] = useState("Newest");
   const [limit] = useState(20);
   const query = useParams();
-
   const [videos, setVideos] = useState([]);
-
   const { data, refetch, isPending } = useSearchVideos({
     search: query.search,
     page: page,
     limit: limit,
+    size: size.toLowerCase(),
+    orientation: orientation.toLowerCase(),
+    sortby: sortBy.toLowerCase(),
   });
-
   useEffect(() => {
     if (data?.videos) {
       setVideos((prevVideos) => [...prevVideos, ...data.videos]);
@@ -34,7 +37,7 @@ export default function Page() {
 
   useEffect(() => {
     refetch();
-  }, [page, refetch]);
+  }, [page, refetch, query.search, size, orientation, sortBy]);
 
   const loadMoreVideos = () => {
     setPage((prevPage) => prevPage + 1);
@@ -75,7 +78,15 @@ export default function Page() {
       </h1>
 
       <Container className="mx-4 py-2">
-        <FilterQuery />
+        <FilterQuery
+          colorFitler={false}
+          sizes={size}
+          orientation={orientation}
+          sortBys={sortBy}
+          setSizes={setSize}
+          setSortBys={setSortBy}
+          setOrientation={setOrientation}
+        />
       </Container>
 
       <Container className="py-4 sm:py-8">
