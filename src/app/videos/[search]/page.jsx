@@ -1,27 +1,27 @@
 "use client";
 import { useEffect, useState } from "react";
 import Container from "@/components/container";
-import NewTrendingFilter from "@/components/Filter/Filter1";
-import PageFilter from "@/components/Filter/PageFilter";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header/Main";
-import HeroVideos from "@/components/Hero/Videos";
 import {
   MasonryContainer,
   MasonryLoading,
   MasonryVideoCard,
 } from "@/components/Masonry";
-import useIsScrolled from "@/hook/isScrolled";
 import useSearchVideos from "@/lib/query/useSearchVideos";
+import { useParams } from "next/navigation";
+import KeywordSearch from "@/components/Filter/keywords";
+import FilterQuery from "@/components/Filter/QueryFilter";
 
 export default function Page() {
-  const scrolled = useIsScrolled("82.5vh");
   const [page, setPage] = useState(1);
   const [limit] = useState(20);
+  const query = useParams();
+
   const [videos, setVideos] = useState([]);
 
   const { data, refetch, isPending } = useSearchVideos({
-    search: "nature",
+    search: query.search,
     page: page,
     limit: limit,
   });
@@ -42,31 +42,51 @@ export default function Page() {
 
   return (
     <div className="relative">
-      <HeroVideos />
+      <div className="sticky top-0 z-50 bg-white border-b">
+        <Header />
+      </div>
 
-      {scrolled && (
-        <div className="sticky top-0 z-50 bg-white shadow-md">
-          <Header />
-        </div>
-      )}
+      <div className="px-4 py-4 sm:flex sm:justify-center">
+        <KeywordSearch
+          keywords={[
+            "nature",
+            "city",
+            "people",
+            "food",
+            "animals",
+            "business",
+            "technology",
+            "industry",
+            "science",
+            "health",
+            "sports",
+            "arts",
+            "culture",
+            "history",
+            "education",
+            "religion",
+            "politics",
+          ]}
+        />
+      </div>
 
-      <Container className="py-4 sm:py-8 flex justify-center">
-        <PageFilter />
-      </Container>
+      <h1 className="text-4xl font-medium  text-gray-800 my-5 px-4 md:px-8">
+        {query.search ? `Free ${query.search} Videos` : "Trending Videos"}{" "}
+      </h1>
 
       <Container className="mx-4 py-2">
-        <NewTrendingFilter />
+        <FilterQuery />
       </Container>
 
       <Container className="py-4 sm:py-8">
-        <MasonryContainer>
-          {videos.map((video) => (
-            <MasonryVideoCard
-              key={`pexels-videos-${i}-${video.id}`}
-              video={video}
-            />
-          ))}
-        </MasonryContainer>
+        {!isPending && (
+          <MasonryContainer>
+            {videos?.map((video, index) => (
+              <MasonryVideoCard key={`${video.id}-${index}`} video={video} />
+            ))}
+          </MasonryContainer>
+        )}
+
         {isPending && <MasonryLoading count={limit} />}
 
         {!isPending && (

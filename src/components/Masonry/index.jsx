@@ -172,10 +172,7 @@ function MasonryVideoCard({ video = {} }) {
   );
 }
 
-function MasonryLoading({
-  columnsBreakPoints = { 640: 1, 768: 2, 1024: 3, 1280: 5 },
-  count = 15,
-}) {
+function MasonryLoading({ count = 15 }) {
   return (
     <MasonryContainer>
       {Array(count)
@@ -184,7 +181,7 @@ function MasonryLoading({
           <div
             key={i}
             className="animate-pulse relative rounded-xl overflow-hidden mb-4 sm:mb-6"
-            style={{ height: `${200 + Math.random() * 200}px` }}
+            style={{ height: i % 2 == 0 ? "250px" : "450px", width: "100%" }}
           >
             <div className="w-full h-full bg-gray-200"></div>
           </div>

@@ -1,35 +1,34 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Container from "@/components/container";
 import NewTrendingFilter from "@/components/Filter/Filter1";
-import PageFilter from "@/components/Filter/PageFilter";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header/Main";
-import HeroPhotos from "@/components/Hero/Photos";
 import {
   MasonryContainer,
   MasonryLoading,
   MasonryPhotoCard,
 } from "@/components/Masonry";
-import useIsScrolled from "@/hook/isScrolled";
 import useSearchPhotos from "@/lib/query/useSearchPhotos";
+import { useParams } from "next/navigation";
+import KeywordSearch from "@/components/Filter/keywords";
+import FilterQuery from "@/components/Filter/QueryFilter";
 
 export default function Home() {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(20);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const query = useParams();
 
   const {
     data,
     refetch: refetch,
     isPending,
   } = useSearchPhotos({
-    search: "current",
+    search: query?.search,
     page,
     per_page: limit,
   });
-
-  const scrolled = useIsScrolled("82.5vh");
 
   const loadMorePhotos = async () => {
     setIsLoadingMore(true);
@@ -39,25 +38,26 @@ export default function Home() {
     setIsLoadingMore(false);
   };
 
+  useEffect(() => {
+    refetch();
+  }, [page, query.search, refetch]);
+
   return (
     <div className="w-full">
-      {scrolled && (
-        <div className="w-full fixed top-0 z-50 bg-white shadow-md">
-          <Header />
-        </div>
-      )}
+      <div className="w-full sticky top-0 z-50 bg-white shadow-sm">
+        <Header />
+      </div>
+
       <div className="relative">
-        <HeroPhotos />
+        <Container className="">
+          <KeywordSearch keywords={data?.keywords} />
+          {/* Search Query */}
+          <h1 className="text-4xl font-medium  text-gray-800 my-5">
+            {query.search ? `Free ${query.search} Photos` : "Trending Photos"}{" "}
+          </h1>
 
-        <div className="my-4 mx-4 sm:flex sm:justify-center">
-          <PageFilter />
-        </div>
-
-        <Container className="py-2 ">
-          <NewTrendingFilter />
-        </Container>
-
-        <Container className="py-4 sm:py-8">
+          {/* Query fileter  */}
+          <FilterQuery activetab="Photos" />
           <MasonryContainer>
             {data?.photos?.map((photo) => (
               <MasonryPhotoCard key={photo.id} photo={photo} />

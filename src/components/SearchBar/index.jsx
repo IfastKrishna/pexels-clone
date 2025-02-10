@@ -6,16 +6,23 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useIsSmallDevice } from "@/context/isSmallDevise";
 import { useSelectedOption } from "@/context/selectedOption";
 
-function SearchBar({ isLoading = false, ...props }) {
+function SearchBar({
+  isLoading = false,
+  handleSubmit = (e) => e.preventDefault(),
+  search = "",
+  setSerch = () => {},
+  ...props
+}) {
   const isSmallDevice = useIsSmallDevice();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const { selectedOption, changeSelectedOption } = useSelectedOption();
 
   return (
-    <div
+    <form
       className={`relative ${
         isSmallDevice ? "max-w-full" : "max-w-4xl"
       } mx-auto w-full`}
+      onSubmit={handleSubmit}
     >
       <motion.div
         initial={{ opacity: 0, y: 0 }} // y: 20
@@ -27,6 +34,7 @@ function SearchBar({ isLoading = false, ...props }) {
         }`}
       >
         <motion.button
+          type="button"
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           className="flex items-center gap-2 px-4 py-3 focus:outline-none bg-white hover:bg-gray-800/5 rounded-xl transition-all duration-300"
@@ -53,6 +61,8 @@ function SearchBar({ isLoading = false, ...props }) {
 
         <div className="flex-1 relative">
           <motion.input
+            value={search}
+            onChange={(e) => setSerch(e.target.value)}
             whileFocus={{ scale: 1.01 }}
             type="text"
             placeholder={`Search for free ${selectedOption.toLowerCase()}`}
@@ -116,7 +126,7 @@ function SearchBar({ isLoading = false, ...props }) {
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
+    </form>
   );
 }
 

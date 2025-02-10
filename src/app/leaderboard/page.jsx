@@ -106,15 +106,16 @@ function Page() {
         <MainHeader />
       </div>
       <Container className="py-4 sm:py-8 ">
-        <div className="flex justify-center my-5">
+        <div className="sm:flex sm:justify-center my-4">
           <PageFilter />
         </div>
+
         <h1 className="text-3xl font-medium text-center">Leaderboard</h1>
         <p className="font-medium text-center text-gray-600 max-w-3xl my-5 mx-auto">
           Members with the most views on content added in the last 4 weeks.
         </p>
 
-        <div className="flex flex-wrap gap-5">
+        <div className="flex flex-wrap justify-center sm:justify-start gap-5">
           <button className="bg-black rounded-full py-3 px-6 hover:bg-black/90 font-medium text-white">
             Recent
           </button>

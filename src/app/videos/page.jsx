@@ -21,7 +21,7 @@ export default function Page() {
   const [videos, setVideos] = useState([]);
 
   const { data, refetch, isPending } = useSearchVideos({
-    search: "nature",
+    search: null,
     page: page,
     limit: limit,
   });
@@ -50,7 +50,7 @@ export default function Page() {
         </div>
       )}
 
-      <Container className="py-4 sm:py-8 flex justify-center">
+      <Container className="py-4 sm:py-8 sm:flex sm:justify-center">
         <PageFilter />
       </Container>
 

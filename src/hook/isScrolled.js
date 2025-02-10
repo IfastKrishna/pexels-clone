@@ -12,9 +12,17 @@ const useIsScrolled = (initial = "0px") => {
           case "px":
             return number;
           case "vh":
-            return (number / 100) * window.innerHeight;
+            return (
+              (number / 100) *
+              (typeof window !== "undefined" ? window.innerHeight : 0)
+            );
           case "pc":
-            return (number / 100) * document.documentElement.scrollHeight;
+            return (
+              (number / 100) *
+              (typeof document !== "undefined"
+                ? document.documentElement.scrollHeight
+                : 0)
+            );
           default:
             return number; // Default to pixels if unit is not recognized
         }

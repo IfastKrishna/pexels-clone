@@ -4,6 +4,7 @@ import NextTopLoader from "nextjs-toploader";
 import { Geist, Geist_Mono } from "next/font/google";
 import { IsSmallDeviceProvider } from "@/context/isSmallDevise";
 import { SelectedOptionProvider } from "@/context/selectedOption";
+import { SearchProvider } from "@/context/useSearch";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,9 +30,11 @@ export default function RootLayout({ children }) {
       >
         <QueryProvider>
           <NextTopLoader showSpinner={false} />
-          <SelectedOptionProvider>
-            <IsSmallDeviceProvider>{children}</IsSmallDeviceProvider>
-          </SelectedOptionProvider>
+          <SearchProvider>
+            <SelectedOptionProvider>
+              <IsSmallDeviceProvider>{children}</IsSmallDeviceProvider>
+            </SelectedOptionProvider>
+          </SearchProvider>
         </QueryProvider>
       </body>
     </html>

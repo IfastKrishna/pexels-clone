@@ -2,12 +2,25 @@
 import api from "@/utils/api";
 import { useQuery } from "@tanstack/react-query";
 
-const useSearchVideos = ({ search, page, limit }) =>
+const useSearchVideos = ({
+  search,
+  page,
+  limit,
+  size = "",
+  orientation = "",
+  sortby = "newest",
+}) =>
   useQuery({
-    queryKey: ["searchVideos", search, page, limit],
+    queryKey: ["searchVideos", search, page, limit, size, orientation, sortby],
     queryFn: async () => {
       const response = await api.get(
-        `/videos/search?query=${search}&per_page=${limit}&page=${page}`
+        `/videos/${
+          sortby == "newest"
+            ? "search"
+            : sortby == "popular"
+            ? "popular"
+            : "curated"
+        }?query=${search}&per_page=${limit}&page=${page}`
       );
       return response.data;
     },

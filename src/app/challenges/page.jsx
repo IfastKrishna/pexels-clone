@@ -3,7 +3,7 @@ import Container from "@/components/container";
 import PageFilter from "@/components/Filter/PageFilter";
 import Footer from "@/components/Footer";
 import MainHeader from "@/components/Header/Main";
-import { Crown, Dot } from "lucide-react";
+import { Crown } from "lucide-react";
 import React from "react";
 
 function page() {
@@ -14,7 +14,7 @@ function page() {
       </div>
       <div className="bg-white rounded-b-3xl md:rounded-b-[100px] w-full py-10">
         <Container className="">
-          <div className="flex justify-center">
+          <div className="sm:flex sm:justify-center my-4">
             <PageFilter />
           </div>
           <h1 className="text-4xl font-medium text-center text-gray-800 my-5">

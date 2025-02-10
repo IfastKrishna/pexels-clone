@@ -1,5 +1,7 @@
 "use client";
+import { useSelectedOption } from "@/context/selectedOption";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useParams, useRouter } from "next/navigation";
 import React, { useRef, useState } from "react";
 
 const tags = [
@@ -19,7 +21,11 @@ const tags = [
 
 const KeywordSearch = ({ keywords = tags }) => {
   const scrollRef = useRef(null);
+  const router = useRouter();
   const [scrollable, setScrollable] = useState({ left: false, right: true });
+  const query = useParams();
+
+  const { selectedOption } = useSelectedOption();
 
   const handleScroll = (direction) => {
     if (!scrollRef.current) return;
@@ -40,6 +46,15 @@ const KeywordSearch = ({ keywords = tags }) => {
           container.scrollLeft + container.offsetWidth < container.scrollWidth,
       });
     }, 200); // Delay to allow for smooth scrolling to update
+  };
+
+  const handleKeyowrdSearch = (keyword) => {
+    keyword = keyword.toLowerCase();
+    if (selectedOption === "Photos") {
+      router.push(`/search/${keyword}`);
+    } else if (selectedOption === "Videos") {
+      router.push(`/videos/${keyword}`);
+    }
   };
 
   return (
@@ -70,7 +85,11 @@ const KeywordSearch = ({ keywords = tags }) => {
         {keywords.map((tag, index) => (
           <span
             key={index}
-            className="px-4 py-3 bg-white border text-gray-800 rounded-xl shadow-sm whitespace-nowrap hover:bg-yellow-300 hover:border-yellow-300 cursor-pointer transition snap-center capitalize font-medium"
+            onClick={() => handleKeyowrdSearch(tag)}
+            className={`px-4 py-3 bg-white border text-gray-800 rounded-xl shadow-sm whitespace-nowrap hover:bg-yellow-300 hover:border-yellow-300 cursor-pointer transition snap-center capitalize font-medium ${
+              query.search === tag.toLowerCase() &&
+              "border-yellow-300 bg-yellow-300"
+            }`}
           >
             {tag}
           </span>
